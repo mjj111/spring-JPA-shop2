@@ -1,7 +1,5 @@
 package com.example.demo.repository;
 
-import com.example.demo.domain.Member;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,7 @@ import javax.transaction.Transactional;
 @SpringBootTest
 public class MemberRepositoryTest {
     @Autowired
-    MemberRepository memberRepository;
+    MemberRepository2 memberRepository;
     @Test
     @Transactional
     @Rollback(false)

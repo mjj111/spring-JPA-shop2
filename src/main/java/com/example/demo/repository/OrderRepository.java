@@ -2,10 +2,8 @@ package com.example.demo.repository;
 
 import com.example.demo.domain.Order;
 import com.example.demo.domain.OrderSearch;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -58,4 +56,68 @@ public class OrderRepository {
         }
         return query.getResultList();
     }
+
+    public List<Order> findAllWithMemberDelivery() {
+        return em.createQuery(
+                        "select o from Order o" +
+                                " join fetch o.member m" +
+                                " join fetch o.delivery d", Order.class)
+                .getResultList();
+    }
+
+    public List<Order> findAllWithItem() {
+        return em.createQuery(
+                        "select distinct o from Order o" +
+                                " join fetch o.member m" +
+                                " join fetch o.delivery d" +
+                                " join fetch o.orderItems oi" +
+                                " join fetch oi.item i", Order.class)
+                .getResultList();
+    }
+    //페치 조인으로 SQL이 1번만 실행됨
+    //distinct 를 사용한 이유는 1대다 조인이 있으므로 데이터베이스 row가 증가한다. 그 결과 같은 order
+    //엔티티의 조회 수도 증가하게 된다. JPA의 distinct는 SQL에 distinct를 추가하고, 더해서 같은 엔티티가
+    //조회되면, 애플리케이션에서 중복을 걸러준다. 이 예에서 order가 컬렉션 페치 조인 때문에 중복 조회 되는
+    //것을 막아준다.
+    //단점
+    //페이징 불가능
+
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        return em.createQuery(
+                        "select o from Order o" +
+                                " join fetch o.member m" +
+                                " join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+    }
+
+//    // QueryDSL 적용
+//    public List<Order> findAll(OrderSearch orderSearch) {
+//        QOrder order = QOrder.order;
+//        QMember member = QMember.member;
+//        return query
+//                .select(order)
+//                .from(order)
+//                .join(order.member, member)
+//                .where(statusEq(orderSearch.getOrderStatus()),
+//                        nameLike(orderSearch.getMemberName()))
+//                .limit(1000)
+//                .fetch();
+//    }
+//    private BooleanExpression statusEq(OrderStatus statusCond) {
+//        if (statusCond == null) {
+//            return null;
+//        }
+//        return order.status.eq(statusCond);
+//    }
+//    private BooleanExpression nameLike(String nameCond) {
+//        if (!StringUtils.hasText(nameCond)) {
+//            return null;
+//        }
+//        return member.name.like(nameCond);
+//    }
+
+
 }
+

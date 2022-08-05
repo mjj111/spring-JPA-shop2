@@ -1,9 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.Member;
-import com.example.demo.repository.MemberRepository;
+import com.example.demo.repository.MemberRepository2;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +27,7 @@ public class MemberService {
     //}
 
     // lombok(RequiredArgsConstructor)을 통해 private final이면 알아서 생성자 주입해준다.
-    private final MemberRepository memberRepository;
+    private final MemberRepository2 memberRepository;
 
 
     // 회원가입 join + 중복검사 validateDuplicateMember
@@ -48,12 +47,20 @@ public class MemberService {
 
     // 전체회원 조회 findMembers
     public List<Member> findMembers(){
+
         return memberRepository.findAll();
     }
 
     // 단일 회원 번호로 조회 findOne
-    public Member findOne(Long memberId){
+    public Member findOne(Long memberId) {
         return memberRepository.findOne(memberId);
+    }
+
+    // 회원 정보 수정
+    @Transactional
+    public void update(Long id, String name) {
+        Member member = memberRepository.findOne(id);
+        member.setName(name);
     }
 
 }

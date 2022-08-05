@@ -1,7 +1,7 @@
 package com.example.demo.Service;
 
 import com.example.demo.domain.Member;
-import com.example.demo.repository.MemberRepository;
+import com.example.demo.repository.MemberRepository2;
 import com.example.demo.service.MemberService;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -20,7 +20,7 @@ public class MemberServiceTest {
     @Autowired
     MemberService memberService;
     @Autowired
-    MemberRepository memberRepository;
+    MemberRepository2 memberRepository;
 
     @Test // junit
     public void 회원가입() throws Exception{

@@ -3,7 +3,7 @@ package com.example.demo.service;
 import com.example.demo.domain.*;
 import com.example.demo.domain.item.Item;
 import com.example.demo.repository.ItemRepository;
-import com.example.demo.repository.MemberRepository;
+import com.example.demo.repository.MemberRepository2;
 import com.example.demo.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderService {
 
-    private final MemberRepository memberRepository;
+    private final MemberRepository2 memberRepository;
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
     /** 주문 */
